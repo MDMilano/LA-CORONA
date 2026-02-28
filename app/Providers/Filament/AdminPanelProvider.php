@@ -2,7 +2,7 @@
 
 namespace App\Providers\Filament;
 
-use Filament\Forms\Components\FileUpload;
+use App\Filament\Widgets\AccountWidget as WidgetsAccountWidget;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -11,7 +11,6 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -42,8 +41,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
+                WidgetsAccountWidget::class,
+                // FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -72,7 +71,7 @@ class AdminPanelProvider extends PanelProvider
                         hasAvatars: true, // Enables the avatar upload form component (default = false)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
                     )
-                    ->avatarUploadComponent(fn($fileUpload) => $fileUpload->disableLabel())
+                    ->avatarUploadComponent(fn ($fileUpload) => $fileUpload)
                     ->passwordUpdateRules(
                         rules: [Password::default()->mixedCase()->uncompromised(3)], // you may pass an array of validation rules as well. (default = ['min:8'])
                         requiresCurrentPassword: true, // when false, the user can update their password without entering their current password. (default = true)
@@ -81,10 +80,15 @@ class AdminPanelProvider extends PanelProvider
                         force: false, // force the user to enable 2FA before they can use the application (default = false)
                         scopeToPanel: true, // scope the 2FA only to the current panel (default = true)
                     )
-                    ->enableBrowserSessions(condition: true),
-                FilamentAuthenticationLogPlugin::make()
+                    ->enableBrowserSessions(condition: true)
+                // ->enablePasskeys(
+                //     condition: true, // enable passkeys for the user (default = false)
+                //     scopeToPanel: true, // scope the passkeys only to the current panel (default = true)
+                // )
+                ,
+                FilamentAuthenticationLogPlugin::make(),
             ])
             ->viteTheme('resources/css/filament/admin/theme.css');
-            ;
+
     }
 }
