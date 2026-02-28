@@ -13,6 +13,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -25,31 +26,25 @@ class RawMaterialsRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                Select::make('raw_material_id')
-                    ->relationship('rawMaterial', 'name')
+                TextInput::make('name')
                     ->required()
-                    ->searchable()
-                    ->preload()
-                    ->placeholder('Select a raw material to attach')
-                    ->createOptionForm([
-                        TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                        TextInput::make('current_stock')
-                            ->numeric()
-                            ->required()
-                            ->minValue(0)
-                            ->step(0.01)
-                            ->suffix('m³'),
-                    ]),
-                TextInput::make('volume_required')
-                    ->label('Volume Required (m³)')
+                    ->maxLength(255),
+                Group::make([
+                    TextInput::make('current_stock')
                     ->numeric()
                     ->required()
-                    ->minValue(0.001)
-                    ->step(0.001)
-                    ->suffix('m³')
-                    ->placeholder('e.g. 1.5'),
+                    ->minValue(0)
+                    ->step(0.01)
+                    ->suffix('m³'),
+                    TextInput::make('volume_required')
+                        ->label('Volume Required (m³)')
+                        ->numeric()
+                        ->required()
+                        ->minValue(0.001)
+                        ->step(0.001)
+                        ->suffix('m³')
+                        ->placeholder('e.g. 1.5'),
+                    ])->columns(2)
             ]);
     }
 
@@ -72,17 +67,27 @@ class RawMaterialsRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make(),
-                AttachAction::make(),
+                AttachAction::make()
+                    ->form(fn (AttachAction $action): array => [
+                        $action->getRecordSelect(),
+                        TextInput::make('volume_required')
+                            ->label('Volume Required (m³)')
+                            ->numeric()
+                            ->required()
+                            ->minValue(0.001)
+                            ->step(0.001)
+                            ->suffix('m³'),
+                    ]),
             ])
             ->recordActions([
                 EditAction::make(),
                 DetachAction::make(),
-                DeleteAction::make(),
+                // DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DetachBulkAction::make(),
-                    DeleteBulkAction::make(),
+                    // DeleteBulkAction::make(),
                 ]),
             ]);
     }
