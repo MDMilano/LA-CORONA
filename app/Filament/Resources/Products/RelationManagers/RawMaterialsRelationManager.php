@@ -68,6 +68,7 @@ class RawMaterialsRelationManager extends RelationManager
             ->headerActions([
                 CreateAction::make(),
                 AttachAction::make()
+                    ->preloadRecordSelect()
                     ->form(fn (AttachAction $action): array => [
                         $action->getRecordSelect(),
                         TextInput::make('volume_required')
