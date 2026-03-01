@@ -13,9 +13,12 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class RawMaterialResource extends Resource
 {
+    protected static string | UnitEnum | null $navigationGroup = 'Shop Management';
+
     protected static ?string $model = RawMaterial::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCubeTransparent;
@@ -44,5 +47,22 @@ class RawMaterialResource extends Resource
             'create' => CreateRawMaterial::route('/create'),
             'edit' => EditRawMaterial::route('/{record}/edit'),
         ];
+    }
+    
+    public static function getNavigationBadge(): ?string
+    {
+        $lowStockCount = static::getModel()::where('current_stock', '<=', 10)->count();
+    
+        return $lowStockCount > 0 ? (string) $lowStockCount : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'The number of low stock raw materials';
     }
 }

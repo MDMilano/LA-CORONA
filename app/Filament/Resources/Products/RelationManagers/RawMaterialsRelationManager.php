@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\RelationManagers;
 
+use Filament\Actions\Action;
 use Filament\Actions\AttachAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -35,7 +36,9 @@ class RawMaterialsRelationManager extends RelationManager
                     ->required()
                     ->minValue(0)
                     ->step(0.01)
-                    ->suffix('m³'),
+                    ->suffix('m³')
+                    ->placeholder('e.g. 100.5')
+                    ->hiddenOn('edit'),
                     TextInput::make('volume_required')
                         ->label('Volume Required (m³)')
                         ->numeric()
@@ -43,7 +46,8 @@ class RawMaterialsRelationManager extends RelationManager
                         ->minValue(0.001)
                         ->step(0.001)
                         ->suffix('m³')
-                        ->placeholder('e.g. 1.5'),
+                        ->placeholder('e.g. 1.5')
+                        ->columnSpan(fn (string $operation): int => $operation === 'edit' ? 2 : 1),
                     ])->columns(2)
             ]);
     }
@@ -77,11 +81,29 @@ class RawMaterialsRelationManager extends RelationManager
                             ->required()
                             ->minValue(0.001)
                             ->step(0.001)
+                            ->placeholder('e.g. 1.5')
                             ->suffix('m³'),
                     ]),
             ])
             ->recordActions([
-                EditAction::make(),
+                // EditAction::make(),
+                Action::make('edit_volume')
+                    ->label('Adjust Volume')
+                    ->icon('heroicon-m-pencil-square')
+                    ->modalWidth('xs')
+                    ->form([
+                        TextInput::make('volume_required')
+                            ->label('Volume Required (m³)')
+                            ->numeric()
+                            ->required()
+                            ->minValue(0.001)
+                            ->step(0.001)
+                            ->suffix('m³')
+                            ->default(fn ($record) => $record->pivot->volume_required),
+                    ])
+                    ->action(function ($record, array $data) {
+                        $record->pivot->update(['volume_required' => $data['volume_required']]);
+                    }),
                 DetachAction::make(),
                 // DeleteAction::make(),
             ])

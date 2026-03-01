@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Customers\Schemas;
 
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -15,7 +16,8 @@ class CustomerForm
             ->components([
                 Section::make('Customer Information')
                     ->schema([
-                        TextInput::make('name')
+                        Group::make([
+                            TextInput::make('name')
                             ->required()
                             ->maxLength(255),
                         TextInput::make('email')
@@ -25,6 +27,8 @@ class CustomerForm
                             ->required()
                             ->maxLength(10)
                             ->prefix('+63'),
+                        ])
+                        ->columns(3),
                         Textarea::make('address')
                             ->columnSpanFull(),
                     ])

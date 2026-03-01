@@ -44,7 +44,8 @@ class OrderForm
                                             ->columnSpanFull(),
                                     ])
                                     ->columnSpanFull(),
-                            ]),
+                            ])
+                            ->createOptionAction(fn ($action) => $action->visible(fn ($operation) => $operation === 'create')),
                         Select::make('product_id')
                             ->relationship('product', 'name')
                             ->required()
@@ -80,9 +81,11 @@ class OrderForm
                                 'pending' => 'Pending',
                                 'processing' => 'Processing',
                                 'completed' => 'Completed',
+                                'cancelled' => 'Cancelled',
                             ])
                             ->required()
-                            ->default('pending'),
+                            ->default('pending')
+                            ->disabledOn('edit'),
                         DatePicker::make('delivery_date')
                             ->date()
                             ->required()

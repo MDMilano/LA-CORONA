@@ -57,6 +57,14 @@ class OrdersTable
                 TextColumn::make('delivery_date')
                     ->date()
                     ->sortable(),
+                TextColumn::make('created_at')
+                    ->dateTime('M d, Y h:i A')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime('M d, Y h:i A')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

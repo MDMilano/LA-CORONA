@@ -39,6 +39,11 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
+            ->navigationGroups([
+                'Shop Management',
+                'Settings',
+                'Logins'
+            ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 WidgetsAccountWidget::class,
@@ -61,6 +66,12 @@ class AdminPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->emailChangeVerification()
+            ->sidebarCollapsibleOnDesktop()
+            ->spa()
+            ->font('Poppins')
+            ->unsavedChangesAlerts()
+            ->resourceCreatePageRedirect('index')
+            ->resourceEditPageRedirect('index')
             ->plugins([
                 BreezyCore::make()
                     ->myProfile(
