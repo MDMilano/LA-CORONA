@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('order_number')->unique();
             $table->foreignId('customer_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->integer('quantity'); // How many trucks/batches
+            $table->foreignId('mixer_truck_id')->constrained()->cascadeOnDelete();
+            $table->integer('quantity');
+            $table->decimal('total_volume', 10, 2);
             $table->decimal('total_amount', 12, 2);
             $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
             $table->date('delivery_date');

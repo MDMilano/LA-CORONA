@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RawMaterial extends Model
 {
-    protected $fillable = ['name', 'unit', 'current_stock'];
+    protected $fillable = ['name', 'current_stock'];
 
     public function products()
     {

@@ -21,17 +21,18 @@ class OrderObserver
     public function updated(Order $order): void
     {
         if ($order->isDirty('status') && $order->status === 'completed') {
-
+            
             DB::transaction(function () use ($order) {
-                // Get the recipe for the ordered product
+                // Get the 1m³ recipe for the ordered Concrete Class
                 $ingredients = $order->product->rawMaterials;
-
+                
                 foreach ($ingredients as $ingredient) {
-                    // Calculate total m³ needed: (m³ per product) * (quantity of products ordered)
-                    $totalVolumeNeeded = $ingredient->pivot->volume_required * $order->quantity;
-
+                    // The math: (Amount needed for 1 m³) * (Total m³ ordered)
+                    // e.g., 0.5m³ Sand * 18m³ Total Volume = 9m³ Sand needed
+                    $totalMaterialNeeded = $ingredient->pivot->volume_required * $order->total_volume;
+                    
                     // Deduct from current stock
-                    $ingredient->decrement('current_stock', $totalVolumeNeeded);
+                    $ingredient->decrement('current_stock', $totalMaterialNeeded);
                 }
             });
         }

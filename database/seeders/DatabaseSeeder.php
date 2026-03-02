@@ -3,11 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\Customer;
+use App\Models\MixerTruck;
 use App\Models\Product;
 use App\Models\RawMaterial;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Foundation\Mix;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -28,14 +30,24 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Product::create([
-            'name' => 'Large Ready Mix',
-            'description' => 'Description for Large Ready Mix',
-            'price' => 50000,
+            'name' => 'Class A Ready Mix',
+            'description' => 'Description for Class A Ready Mix',
+            'price' => 25000,
         ]);
         Product::create([
-            'name' => 'Medium Ready Mix',
-            'description' => 'Description for Medium Ready Mix',
+            'name' => 'Class B Ready Mix',
+            'description' => 'Description for Class B Ready Mix',
             'price' => 30000,
+        ]);
+
+        MixerTruck::create([
+            'name' => 'Standard 9m³ Truck',
+            'capacity' => 9.00,
+        ]);
+        
+        MixerTruck::create([
+            'name' => 'Large 12m³ Truck',
+            'capacity' => 12.00,
         ]);
 
         RawMaterial::create([

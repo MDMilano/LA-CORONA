@@ -19,6 +19,8 @@ class RawMaterialResource extends Resource
 {
     protected static string | UnitEnum | null $navigationGroup = 'Shop Management';
 
+    protected static ?int $navigationSort = 3;
+
     protected static ?string $model = RawMaterial::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCubeTransparent;

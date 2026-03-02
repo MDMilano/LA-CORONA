@@ -9,7 +9,7 @@ class Order extends Model
 {
     protected $fillable = [
         'order_number', 'customer_id', 'product_id',
-        'quantity', 'total_amount', 'status', 'delivery_date',
+        'mixer_truck_id', 'quantity', 'total_volume', 'total_amount', 'status', 'delivery_date',
     ];
 
     public function customer(): BelongsTo
@@ -20,6 +20,11 @@ class Order extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function mixerTruck(): BelongsTo
+    {
+        return $this->belongsTo(MixerTruck::class);
     }
 
     // Auto-generate order number
