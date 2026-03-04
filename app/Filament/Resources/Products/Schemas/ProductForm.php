@@ -28,12 +28,12 @@ class ProductForm
                     ])
                     ->columns(2)
                     ->columnSpanFull(),
-                Section::make()
-                    ->schema([
-                        Textarea::make('description')
-                            ->columnSpanFull(),
-                    ])
-                    ->columnSpanFull(),
+                // Section::make()
+                //     ->schema([
+                //         Textarea::make('description')
+                //             ->columnSpanFull(),
+                //     ])
+                //     ->columnSpanFull(),
             ]);
     }
 }
