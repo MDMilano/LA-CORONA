@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Http\Middleware\StatusMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -23,29 +22,23 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Tapp\FilamentAuthenticationLog\FilamentAuthenticationLogPlugin;
 
-class AdminPanelProvider extends PanelProvider
+class SuperadminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->id('admin')
-            ->path('')
+            ->id('superadmin')
+            ->path('superadmin')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
+            ->discoverResources(in: app_path('Filament/Superadmin/Resources'), for: 'App\Filament\Superadmin\Resources')
+            ->discoverPages(in: app_path('Filament/Superadmin/Pages'), for: 'App\Filament\Superadmin\Pages')
             ->pages([
                 Dashboard::class,
             ])
-            ->navigationGroups([
-                'Shop Management',
-                'Settings',
-                'Logins'
-            ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Superadmin/Widgets'), for: 'App\Filament\Superadmin\Widgets')
             ->widgets([
                 // AccountWidget::class,
                 // FilamentInfoWidget::class,
@@ -60,7 +53,6 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                StatusMiddleware::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
@@ -99,8 +91,8 @@ class AdminPanelProvider extends PanelProvider
                 //     scopeToPanel: true, // scope the passkeys only to the current panel (default = true)
                 // )
                 ,
+                FilamentAuthenticationLogPlugin::make(),
             ])
             ->viteTheme('resources/css/filament/admin/theme.css');
-
     }
 }

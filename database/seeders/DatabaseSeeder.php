@@ -11,6 +11,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Mix;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,11 +24,22 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::create([
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'superadmin']);
+
+        $admin =User::create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('admin'),
         ]);
+        $admin->assignRole('admin');
+
+        $superadmin = User::create([
+            'name' => 'Superadmin',
+            'email' => 'superadmin@example.com',
+            'password' => Hash::make('superadmin'),
+        ]);
+        $superadmin->assignRole('superadmin');
 
         Product::create([
             'name' => 'Class A Ready Mix',
