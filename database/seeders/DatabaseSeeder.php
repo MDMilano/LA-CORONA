@@ -27,29 +27,13 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'superadmin']);
 
-        $admin =User::create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('admin'),
-        ]);
-        $admin->assignRole('admin');
-
-        $superadmin = User::create([
-            'name' => 'Superadmin',
-            'email' => 'superadmin@example.com',
-            'password' => Hash::make('superadmin'),
-        ]);
-        $superadmin->assignRole('superadmin');
-
         Product::create([
-            'name' => 'Class A Ready Mix',
-            'description' => 'Description for Class A Ready Mix',
-            'price' => 25000,
+            'name' => '2500 G-1 28D',
+            'price' => 2500,
         ]);
         Product::create([
-            'name' => 'Class B Ready Mix',
-            'description' => 'Description for Class B Ready Mix',
-            'price' => 30000,
+            'name' => '3000 G-1 28D',
+            'price' => 3000,
         ]);
 
         MixerTruck::create([
