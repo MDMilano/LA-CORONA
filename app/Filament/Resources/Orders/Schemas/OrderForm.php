@@ -61,7 +61,32 @@ class OrderForm
                             ->searchable()
                             ->live()
                             ->preload()
-                            ->afterStateUpdated(fn (Set $set, Get $get) => static::updateTotals($set, $get)),
+                            ->afterStateUpdated(fn (Set $set, Get $get) => static::updateTotals($set, $get))
+                            ->rules([
+                                fn (): \Closure => function (string $attribute, $value, \Closure $fail) {
+                                    $product = \App\Models\Product::with('rawMaterials')->find($value);
+                                    
+                                    // If the product exists but the recipe is empty, throw a hard error!
+                                    if ($product && $product->rawMaterials->isEmpty()) {
+                                        $fail('This concrete class has no raw materials assigned. Please update the recipe before ordering.');
+
+                                        Notification::make()
+                                            ->id('empty_recipe_warning')
+                                            ->danger()
+                                            ->title('Missing Recipe!')
+                                            ->body("The concrete class '{$product->name}' has no raw materials attached. You cannot order it yet.")
+                                            ->persistent()
+                                            ->actions([
+                                                Action::make('update_recipe')
+                                                    ->label('Update Recipe')
+                                                    ->button()
+                                                    ->color('danger')
+                                                    ->url("/products/{$product->id}/edit", shouldOpenInNewTab: true),
+                                            ])
+                                            ->send();
+                                    }
+                                },
+                            ]),
                         Select::make('mixer_truck_id')
                             ->relationship('mixerTruck', 'name')
                             ->label('Mixer Truck')
@@ -148,6 +173,29 @@ class OrderForm
             $truck = MixerTruck::find($truckId);
 
             if ($product && $truck) {
+
+                if ($product->rawMaterials->isEmpty()) {
+                    Notification::make()
+                        ->id('empty_recipe_warning')
+                        ->danger()
+                        ->title('Missing Recipe!')
+                        ->body("The concrete class '{$product->name}' has no raw materials attached. You cannot order it yet.")
+                        ->actions([
+                            Action::make('update_recipe')
+                                ->label('Update Recipe')
+                                ->button()
+                                ->color('danger')
+                                ->url("/products/{$product->id}/edit", shouldOpenInNewTab: true),
+                        ])
+                        ->persistent()
+                        ->send();
+                        
+                    // Optionally clear the total fields so they can't proceed
+                    $set('total_volume', null);
+                    $set('total_amount', null);
+                    return; // Stop the rest of the function from running
+                }
+
                 // Calculate Total Volume: Truck Capacity * Quantity
                 $totalVolume = $truck->capacity * $quantity;
                 

@@ -11,6 +11,7 @@ use Filament\Widgets\TableWidget;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Filament\Notifications\Notification;
+use Filament\Tables\Columns\TextColumn;
 
 class TodayOrdersTable extends TableWidget
 {
@@ -29,12 +30,12 @@ class TodayOrdersTable extends TableWidget
                 ->orderBy('created_at', 'asc')
             )
             ->columns([
-                Tables\Columns\TextColumn::make('order_number')->searchable(),
-                Tables\Columns\TextColumn::make('customer.name')->label('Customer'),
-                Tables\Columns\TextColumn::make('product.name')->label('Class'),
-                Tables\Columns\TextColumn::make('mixerTruck.name')->label('Truck'),
-                Tables\Columns\TextColumn::make('total_volume')->label('Volume')->suffix(' m³'),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('order_number')->searchable(),
+                TextColumn::make('customer.name')->label('Customer'),
+                TextColumn::make('product.name')->label('Class'),
+                TextColumn::make('mixerTruck.name')->label('Truck'),
+                TextColumn::make('total_volume')->label('Volume')->suffix(' m³'),
+                TextColumn::make('status')
                     ->badge()
                     ->colors([
                         'warning' => 'pending',
