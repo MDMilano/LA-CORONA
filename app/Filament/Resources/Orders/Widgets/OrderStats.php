@@ -14,7 +14,7 @@ class OrderStats extends StatsOverviewWidget
             Stat::make('Total Orders', Order::count())
                 ->description('Total number of orders')
                 ->icon('heroicon-m-shopping-cart')
-                ->color('primary'),
+                ->color('info'),
             Stat::make('Pending Orders', Order::where('status', 'pending')->count())
                 ->description('Number of pending orders')
                 ->icon('heroicon-m-clock')

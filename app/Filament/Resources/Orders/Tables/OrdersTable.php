@@ -63,7 +63,7 @@ class OrdersTable
                         'danger' => 'cancelled',
                         'warning' => 'pending',
                         'success' => 'completed',
-                        'primary' => 'processing',
+                        'info' => 'processing',
                     ]),
                 TextColumn::make('delivery_date')
                     ->date()
@@ -92,7 +92,7 @@ class OrdersTable
                     Action::make('processing')
                         ->label('Processing')
                         ->icon(Heroicon::OutlinedPlay)
-                        ->color('primary')
+                        ->color('info')
                         ->visible(fn (Order $record) => $record->status === 'pending')
                         ->action(function (Order $record) {
                             $record->status = 'processing';

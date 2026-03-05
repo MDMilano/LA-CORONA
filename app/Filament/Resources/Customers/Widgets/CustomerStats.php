@@ -15,7 +15,7 @@ class CustomerStats extends StatsOverviewWidget
             Stat::make('Total Customers', Customer::count())
                 ->description('Total number of customers')
                 ->icon('heroicon-m-user-group')
-                ->color('primary'),
+                ->color('info'),
             Stat::make('Active Customers', Customer::whereHas('orders', function ($query) {
                     $query->where('created_at', '>=', now()->subMonth());
                 })->count())

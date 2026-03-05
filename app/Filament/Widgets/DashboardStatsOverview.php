@@ -21,7 +21,7 @@ class DashboardStatsOverview extends StatsOverviewWidget
             Stat::make('Deliveries Today', Order::whereDate('delivery_date', $today)->count())
                 ->description('Trucks scheduled for dispatch today')
                 ->descriptionIcon('heroicon-m-truck')
-                ->color('primary'),
+                ->color('info'),
 
             // 2. Total Volume to Mix
             Stat::make('Volume to Mix Today', Order::whereDate('delivery_date', $today)->sum('total_volume') . ' m³')

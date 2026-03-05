@@ -39,7 +39,7 @@ class TodayOrdersTable extends TableWidget
                     ->badge()
                     ->colors([
                         'warning' => 'pending',
-                        'primary' => 'processing',
+                        'info' => 'processing',
                     ]),
             ])
             ->filters([
@@ -53,7 +53,7 @@ class TodayOrdersTable extends TableWidget
                 Action::make('dispatch')
                     ->label('Dispatch')
                     ->button() 
-                    ->color('primary')
+                    ->color('info')
                     ->icon('heroicon-o-truck')
                     ->visible(fn (Order $record) => $record->status === 'pending')
                     ->action(function (Order $record) {

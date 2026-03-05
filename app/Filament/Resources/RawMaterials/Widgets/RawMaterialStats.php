@@ -14,7 +14,7 @@ class RawMaterialStats extends StatsOverviewWidget
             Stat::make('Total Raw Materials', RawMaterial::count())
                 ->description('Total number of raw materials')
                 ->icon('heroicon-m-cube-transparent')
-                ->color('primary'),
+                ->color('info'),
             Stat::make('Low Stock', RawMaterial::where('current_stock', '<=', 10)->count())
                 ->description('Number of raw materials with low stock')
                 ->icon('heroicon-m-exclamation-triangle')

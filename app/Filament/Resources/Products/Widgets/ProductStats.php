@@ -14,7 +14,7 @@ class ProductStats extends StatsOverviewWidget
             Stat::make('Total Products', Product::count())
                 ->description('Total number of products')
                 ->icon('heroicon-m-cube')
-                ->color('primary'),
+                ->color('info'),
             Stat::make('Active Products', Product::whereHas('orders', function ($query) {
                     $query->where('created_at', '>=', now()->subMonth());
                 })->count())

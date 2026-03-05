@@ -15,7 +15,7 @@ class MixerTruckStats extends StatsOverviewWidget
             Stat::make('Total Mixer Trucks', MixerTruck::count())
                 ->description('Total number of mixer trucks')
                 ->icon('heroicon-o-truck')
-                ->color('primary'),
+                ->color('info'),
         ];
     }
 }
